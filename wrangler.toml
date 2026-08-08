@@ -1,2 +1,2 @@
 name = "avatars"
-main = "_worker.js"
+main = "_worker.ts"
