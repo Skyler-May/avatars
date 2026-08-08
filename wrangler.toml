@@ -1,0 +1,2 @@
+name = "avatars"
+main = "_worker.js"
