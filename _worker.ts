@@ -210,11 +210,11 @@ const FEMALE_AVATARS = [
 ];
 
 export default {
-  async fetch(request) {
+  async fetch(request: { url: string | URL; }) {
     const url = new URL(request.url);
     const gender = url.pathname.split('/')[1];
     if (!['male', 'female'].includes(gender)) {
-      return new Response('请使用 /male 或 /female', { status: 400 });
+      return new Response('请使用 /male 或 /female,/animal,/scenery', { status: 400 });
     }
     const avatars = gender === 'male' ? MALE_AVATARS : FEMALE_AVATARS;
     if (avatars.length === 0) return new Response('暂无头像', { status: 404 });

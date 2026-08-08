@@ -1,2 +1,8 @@
 # Dependencies
 node_modules
+
+# 图片下载器
+/download_pexels_avatars.js
+
+# work 生成器
+/generate-worker.js
