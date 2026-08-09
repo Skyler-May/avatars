@@ -2,6 +2,7 @@
 node_modules
 /package.json
 /yarn.lock
+/tsconfig.json
 
 # 开发源
 /tools

@@ -5,7 +5,7 @@
  * - 50 动物
  * - 50 风景
  * 
- * - 生成时间: 2026/8/9 17:43:19
+ * - 生成时间: 2026/8/9 17:50:30
  */
 
 const MALE_AVATARS = [
@@ -330,7 +330,19 @@ export default {
                     gender === 'scenery' ? SCENERY_AVATARS : SCENERY_AVATARS;
     if (avatars.length === 0) return new Response('暂无头像', { status: 404 });
     const randomUrl = avatars[Math.floor(Math.random() * avatars.length)];
-    const imageResponse = await fetch(randomUrl);
+    
+    // 🔥 使用 cf.image 进行图片转换（如需禁用，可删除 cf 参数）
+    const imageResponse = await fetch(randomUrl, {
+      cf: {
+        image: {
+          width: 200,
+          height: 200,
+          fit: "cover",
+          quality: 80
+        }
+      }
+    });
+    
     const image = await imageResponse.arrayBuffer();
     return new Response(image, {
       headers: {
