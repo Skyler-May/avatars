@@ -1,8 +1,7 @@
 # Dependencies
 node_modules
+/package.json
+/yarn.lock
 
-# 图片下载器
-/download_pexels_avatars.js
-
-# work 生成器
-/generate-worker.js
+# 开发源
+/tools
