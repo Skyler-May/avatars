@@ -6,3 +6,10 @@ node_modules
 
 # 开发源
 /tools
+
+.vscode
+.yarn
+.prettierignore
+.prettierrc
+
+/prettier.config.js
