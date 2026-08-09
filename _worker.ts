@@ -1,14 +1,14 @@
 /**
  * 自动生成:
- * - 100 男性
+   * - 100 男性
  * - 100 女性
  * - 50 动物
  * - 50 风景
- * 
- * - 生成时间: 2026/8/9 18:00:54
- */
+  * 
+  * - 生成时间: 2026/8/9 18:30:06
+  */
 
-const MALE_AVATARS = [
+  const MALE_AVATARS = [
   'https://raw.githubusercontent.com/Skyler-May/avatars/main/assets/images/male/male_10163504.jpg',
   'https://raw.githubusercontent.com/Skyler-May/avatars/main/assets/images/male/male_10898851.jpg',
   'https://raw.githubusercontent.com/Skyler-May/avatars/main/assets/images/male/male_10921414.jpg',
@@ -316,39 +316,46 @@ const SCENERY_AVATARS = [
   'https://raw.githubusercontent.com/Skyler-May/avatars/main/assets/images/scenery/scenery_9060482.jpg',
   'https://raw.githubusercontent.com/Skyler-May/avatars/main/assets/images/scenery/scenery_9968874.jpg'
 ];
-
-export default {
-   async fetch(request: { url: string | URL; }) {
-    const url = new URL(request.url);
-    const gender = url.pathname.split('/')[1];
-    if (!['male', 'female', 'animal', 'scenery'].includes(gender)) {
-      return new Response('欢迎使用头像服务，请访问 /male, /female, /animal 或 /scenery', { status: 200 });
-    }
-    const avatars = gender === 'male' ? MALE_AVATARS :
+    export default {
+      async fetch(request: { url: string | URL; }) {
+        const url = new URL(request.url);
+        const gender = url.pathname.split('/')[1];
+        if (!['male', 'female', 'animal', 'scenery'].includes(gender)) {
+          return new Response('欢迎使用头像服务，请访问 /male, /female, /animal 或 /scenery', { status: 200 });
+        }
+        const avatars = gender === 'male' ? MALE_AVATARS :
                     gender === 'female' ? FEMALE_AVATARS :
                     gender === 'animal' ? ANIMAL_AVATARS :
                     gender === 'scenery' ? SCENERY_AVATARS : SCENERY_AVATARS;
-    if (avatars.length === 0) return new Response('暂无头像', { status: 404 });
-    const randomUrl = avatars[Math.floor(Math.random() * avatars.length)];
-    
-    // 🔥 使用 cf.image 进行图片转换（如需禁用，可删除 cf 参数）
-    const imageResponse = await fetch(randomUrl, {
-      cf: {
-        image: {
-          width: 200,
-          height: 200,
-          fit: "cover",
-          quality: 80
-        }
+        if (avatars.length === 0) return new Response('暂无头像', { status: 404 });
+        const randomUrl = avatars[Math.floor(Math.random() * avatars.length)];
+        
+        // 使用 cf.image 进行图片转换（如需禁用，可删除 cf 参数）
+        const imageResponse = await fetch(randomUrl, {
+          cf: {
+            image: {
+              width: 200,
+              height: 200,
+              fit: "contain",
+              quality: 80
+            }
+          }
+        } as any);
+        
+        const image = await imageResponse.arrayBuffer();
+        const ext = randomUrl.split('.').pop()?.toLowerCase() || '';
+        let contentType = 'image/jpeg';
+        if (ext === 'png') contentType = 'image/png';
+        else if (ext === 'webp') contentType = 'image/webp';
+        else if (ext === 'gif') contentType = 'image/gif';
+        const finalContentType = imageResponse.headers.get('content-type') || contentType;
+
+        return new Response(image, {
+          headers: {
+            'Content-Type': finalContentType,
+            'Cache-Control': 'public, max-age=86400'
+          }
+        });
       }
-    });
-    
-    const image = await imageResponse.arrayBuffer();
-    return new Response(image, {
-      headers: {
-        'Content-Type': imageResponse.headers.get('content-type') || 'image/jpeg',
-        'Cache-Control': 'public, max-age=86400'
-      }
-    });
-  }
-};
+    };
+  
