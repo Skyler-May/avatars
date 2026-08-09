@@ -5,7 +5,7 @@
  * - 50 动物
  * - 50 风景
  * 
- * - 生成时间: 2026/8/9 17:50:30
+ * - 生成时间: 2026/8/9 18:00:54
  */
 
 const MALE_AVATARS = [
@@ -318,7 +318,7 @@ const SCENERY_AVATARS = [
 ];
 
 export default {
-  async fetch(request: { url: string | URL; }) {
+   async fetch(request: { url: string | URL; }) {
     const url = new URL(request.url);
     const gender = url.pathname.split('/')[1];
     if (!['male', 'female', 'animal', 'scenery'].includes(gender)) {
